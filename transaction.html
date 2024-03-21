@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perform Transaction</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Perform Transaction</h1>
+        <form id="transactionForm">
+            <div class="form-group">
+                <label for="accountNumber">Account Number:</label>
+                <input type="text" id="accountNumber" name="accountNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+            </div>
+            <button type="button" onclick="deposit()">Deposit</button>
+            <button type="button" onclick="withdraw()">Withdraw</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+
+function transaction() {
+            window.location.href = 'transaction.html'; // Redirect to the account opening form
+        }
+        function deposit() {
+            let accountNumber = document.getElementById('accountNumber').value;
+            let amount = parseFloat(document.getElementById('amount').value);
+            performTransaction(accountNumber, amount, 'deposit');
+        }
+
+        function withdraw() {
+            let accountNumber = document.getElementById('accountNumber').value;
+            let amount = parseFloat(document.getElementById('amount').value);
+            performTransaction(accountNumber, amount, 'withdraw');
+        }
+
+        function performTransaction(accountNumber, amount, type) {
+            let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+            let accountIndex = accounts.findIndex(acc => acc.accountNumber === accountNumber);
+            if (accountIndex !== -1) {
+                if (type === 'deposit') {
+                    accounts[accountIndex].balance += amount;
+                } else if (type === 'withdraw') {
+                    if (accounts[accountIndex].balance >= amount) {
+                        accounts[accountIndex].balance -= amount;
+                    } else {
+                        alert('Insufficient funds.');
+                        return;
+                    }
+                }
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                alert('Transaction successful.');
+            } else {
+                alert('Account not found.');
+            }
+        }
+    </script>
+</body>
+</html>

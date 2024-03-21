@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Accounts</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container2" id="container2">
+        <h1>All Accounts</h1>
+        <div id="accountsList"></div>
+
+        </div>
+        <div class="buttons" style="display: flex; justify-content: space-around;">
+            <button onclick="transaction()">Perform Transaction</button>
+            <button onclick="openAccountForm()">Open New Account</button>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        displayAccounts();
+
+        function displayAccounts() {
+            let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+            let accountsList = document.getElementById('accountsList');
+            let output = '';
+            if (accounts.length > 0) {
+                accounts.forEach(function(account) {
+                    output += `
+                        <div class="account">
+                            <h2>Account Number: ${account.accountNumber}</h2>
+                            <p>Account Holder: ${account.name}</p>
+                            <p>Balance: $${account.balance}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                output = "<p>No accounts found.</p>";
+            }
+            accountsList.innerHTML = output;
+        }
+
+        function transaction() {
+            window.location.href = 'transaction.html'; // Redirect to the account opening form
+        }
+
+        function openAccountForm() {
+            window.location.href = 'index.html'; // Redirect to the account opening form
+        }
+    </script>
+</body>
+</html>
